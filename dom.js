@@ -28,7 +28,8 @@ async function afterSubmit(e){
         <button class="delete">Delete</button>
     </li>`;
     ul.innerHTML += add;
-    document.getElementById("total").innerHTML = `$ ${parseInt(document.getElementById("total").childNodes[0].textContent.slice(1))+parseInt(obj.amount)}`
+    const count =document.getElementById("total");
+    count.innerHTML = `$ ${parseInt(count.childNodes[0].textContent.slice(1))+parseInt(obj.amount)}`
     }
     catch(err){
         console.log(err);
