@@ -1,15 +1,15 @@
 let form = document.getElementById("myform");
 let ul = document.getElementById("list")
-const url='https://crudcrud.com/api/68ac29412a3f4a0090ed87459ff27d36/expense';
+const url='https://crudcrud.com/api/5bc5f5d0e7d141dab198f4ff6d9707e7/expense';
 form.addEventListener("submit",afterSubmit);
 
-window.addEventListener("load",afterLoad());
+window.addEventListener("load",afterLoad);
 
 ul.addEventListener("click",listClick);
 
 
-
 async function afterSubmit(e){
+    e.preventDefault();
     let amt = document.getElementById("amount").value;
     let desp = document.getElementById("desp").value;
     let cho = document.getElementById("choose").value;
@@ -20,7 +20,15 @@ async function afterSubmit(e){
         choose : cho ,
     } 
     try{
-        await axios.post(url,obj);
+        let res= await axios.post(url,obj);
+        const add = `<li>
+        <p hidden>${res.data._id}</p>
+        $${obj.amount} ${obj.description} ${obj.choose}
+        <button class="edit">Edit</button>
+        <button class="delete">Delete</button>
+    </li>`;
+    ul.innerHTML += add;
+    document.getElementById("total").innerHTML = `$ ${parseInt(document.getElementById("total").childNodes[0].textContent.slice(1))+parseInt(obj.amount)}`
     }
     catch(err){
         console.log(err);
@@ -39,7 +47,7 @@ async function afterLoad(e){
                             <button class="edit">Edit</button>
                             <button class="delete">Delete</button>
                         </li>`;
-        document.getElementById('list').innerHTML += add;
+        ul.innerHTML += add;
         totalAmount += parseInt(obj.amount) ;
         });
         total.appendChild(document.createTextNode("$"+totalAmount));
